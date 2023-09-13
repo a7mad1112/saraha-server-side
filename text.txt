@@ -1,0 +1,2 @@
+User => id, userName, email, password, phone, gender, ...etc
+Message => id, content, date, receiver_id
