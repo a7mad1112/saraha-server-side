@@ -1,5 +1,7 @@
 import userModel from '../../../db/models/user.model.js';
 import bcryptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
 export const signup = async (req, res) => {
   const { userName, email, password, gender } = req.body;
 
@@ -27,8 +29,11 @@ export const login = async (req, res) => {
   const user = await userModel.findOne({ email });
   if (!user) return res.json({ msg: 'Invalid data' });
 
-  const match = bcryptjs.compareSync(password, user.password)
+  const match = bcryptjs.compareSync(password, user.password);
   if (!match) return res.json({ msg: 'Invalid data' });
 
-  return res.json(user);
+  const token = jwt.sign({ id: user._id }, process.env.LOGIN_SIGNATURE, {
+    expiresIn: '1h',
+  });
+  return res.json({msg: "success", token});
 };
