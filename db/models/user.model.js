@@ -22,6 +22,7 @@ const userSchema = new Schema(
       default: 'Male',
       enum: ['Male', 'Female'],
     },
+    age: { type: Number }
   },
   {
     timestamps: true,
