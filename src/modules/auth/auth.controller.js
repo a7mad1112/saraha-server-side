@@ -6,7 +6,7 @@ export const signup = async (req, res) => {
     const { userName, email, password, gender } = req.body;
     const user = await userModel.findOne({ email });
     if (user) {
-      return res.json({ msg: 'Email exist' });
+      return res.status(409).json({ msg: 'Email exist' });
     }
 
     const hashedPassword = await bcryptjs.hash(
@@ -22,7 +22,7 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    return res.json({ msg: 'success', user: createUser._id });
+    return res.status(201).json({ msg: 'success', user: createUser._id });
   
 };
 
@@ -30,13 +30,13 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
-    if (!user) return res.json({ msg: 'Invalid data' });
+    if (!user) return res.status(404).json({ msg: 'Invalid data' });
 
     const match = bcryptjs.compareSync(password, user.password);
-    if (!match) return res.json({ msg: 'Invalid data' });
+    if (!match) return res.status(404).json({ msg: 'Invalid data' });
 
     const token = jwt.sign({ id: user._id }, process.env.LOGIN_SIGNATURE, {
       expiresIn: '1h',
     });
-    return res.json({ msg: 'success', token });
+    return res.status(200).json({ msg: 'success', token });
 };
