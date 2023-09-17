@@ -3,9 +3,7 @@ import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res) => {
-  try {
     const { userName, email, password, gender } = req.body;
-
     const user = await userModel.findOne({ email });
     if (user) {
       return res.json({ msg: 'Email exist' });
@@ -25,13 +23,10 @@ export const signup = async (req, res) => {
     });
 
     return res.json({ msg: 'success', user: createUser._id });
-  } catch (error) {
-    return res.json({ msg: 'error', error: error.stack });
-  }
+  
 };
 
 export const login = async (req, res) => {
-  try {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
@@ -44,7 +39,4 @@ export const login = async (req, res) => {
       expiresIn: '1h',
     });
     return res.json({ msg: 'success', token });
-  } catch (error) {
-    return res.json({ msg: 'error', error: error.stack });
-  }
 };
