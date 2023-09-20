@@ -1,22 +1,22 @@
 import nodemailer from "nodemailer";
 
 async function sendEmail(to, subject, html) {
+  const { SEND_EMAIL, SEND_PASSWORD } = process.env
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-      user: "REPLACE-WITH-YOUR-ALIAS@YOURDOMAIN.COM",
-      pass: "REPLACE-WITH-YOUR-GENERATED-PASSWORD",
+      user: SEND_EMAIL,
+      pass: SEND_PASSWORD,
     },
   });
 
   // async..await is not allowed in global scope, must use a wrapper
   // send mail with defined transport object
   const info = await transporter.sendMail({
-    from: '"Ahmed Alawneh 👻" <ahmalawneh@example.com>', // sender address
+    from: `"Saraha Application 👻" <${SEND_EMAIL}>`, // sender address
     to, // list of receivers
     subject, // Subject line
-    text: "Hello world?", // plain text body
     html, // html body
   });
 }

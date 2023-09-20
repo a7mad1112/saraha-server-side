@@ -8,13 +8,10 @@ export const signupBodySchema = joi.object({
   age: joi.number().integer().min(20).max(80).required(),
 });
 
-export const signupQuerySchema = joi.object({
-  test: joi.string().required(),
-})
+
 
 export const signupSchema = {
   body: signupBodySchema,
-  query: signupQuerySchema
 }
 export const loginSchema = joi.object({
   email: joi.string().email().required().messages({

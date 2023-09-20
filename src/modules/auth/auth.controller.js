@@ -2,6 +2,7 @@ import userModel from '../../../db/models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { loginSchema } from './auth.validation.js';
+import sendEmail from '../../services/sendEmail.js';
 
 export const signup = async (req, res) => {
 
@@ -15,7 +16,7 @@ export const signup = async (req, res) => {
     password,
     +process.env.SALT_ROUND
   );
-
+  sendEmail(email, "Confirm Email", "<a href='#'>Verify email</a>")
   const createUser = await userModel.create({
     userName,
     email,
