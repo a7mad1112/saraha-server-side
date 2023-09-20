@@ -7,4 +7,7 @@ const app = express();
 
 app.post('/signup', validation(signupSchema), asyncHandler(authController.signup));
 app.post('/login', validation(loginSchema), asyncHandler(authController.login));
+app.patch('/confirmEmail/:token', asyncHandler(authController.confirmEmail))
+app.patch('/newConfirmEmail/:refreshToken', asyncHandler(authController.newConfirmEmail))
+
 export default app;
