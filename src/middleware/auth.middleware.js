@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import userModel from '../../db/models/user.model.js';
-const authMiddleware = async (req, res, next) => {
-  try {
+import { asyncHandler } from './errorHandling.js';
+const authMiddleware = asyncHandler(
+  async (req, res, next) => {
     const { authorization } = req.headers;
     const { BEARER_KEY, LOGIN_SIGNATURE } = process.env;
     if (!authorization?.startsWith(BEARER_KEY)) {
@@ -21,9 +22,7 @@ const authMiddleware = async (req, res, next) => {
     }
     req.user = authUser;
     next();
-  } catch (error) {
-    return res.json({ msg: 'error', error: error.stack });
   }
-};
+)
 
 export default authMiddleware;

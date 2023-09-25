@@ -1,7 +1,8 @@
 import userModel from './../../../db/models/user.model.js';
 import msgModel from './../../../db/models/msg.model.js';
-export const getMsgs = (req, res) => {
-  return res.json({ msg: 'success' });
+export const getMsgs = async (req, res) => {
+  const msgsList = await msgModel.find({ receiverId: req.user._id })
+  return res.json({ msg: 'success', msgsList });
 };
 
 
