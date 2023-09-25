@@ -24,8 +24,8 @@ export const signup = async (req, res) => {
   });
   const emailToken = jwt.sign({ email }, process.env.EMAIL_TOKEN, { expiresIn: "1h" })
   const refreshToken = jwt.sign({ email }, process.env.EMAIL_TOKEN, { expiresIn: '1d' })// 1 day
-  const link = `http://localhost:3000/auth/confirmEmail/${emailToken}`
-  const refreshLink = `http://localhost:3000/auth/newConfirmEmail/${refreshToken}`
+  const link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${emailToken}`
+  const refreshLink = `${req.protocol}://${req.headers.host}/auth/newConfirmEmail/${refreshToken}`
   const html = `<a href='${link}'>Verify email <br/> or <a href=${refreshLink}>request new email to verify your email</a></a>`
   sendEmail(email, "Confirm Email", html)
   return res.status(201).json({ msg: 'success', user: createUser._id });
@@ -69,7 +69,7 @@ export const newConfirmEmail = async (req, res, next) => {
 
 
   const emailToken = jwt.sign({ email: decoded.email }, process.env.EMAIL_TOKEN, { expiresIn: "1h" })
-  const link = `http://localhost:3000/auth/confirmEmail/${emailToken}`
+  const link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${emailToken}`
   const html = `<a href='${link}'>Verify email</a>`
   sendEmail(decoded.email, "Confirm Email", html)
 
